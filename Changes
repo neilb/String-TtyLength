@@ -3,6 +3,7 @@ Revision history for Perl module String::TtyLength
 0.01_01 2020-09-10 NEILB
     - Added tty_width() which tries to return the number of columns that
       the string will take up on a terminal.
+    - Renamed the basic.t test file as tty_length.t
 
 0.01 2020-09-06 NEILB
     - First release to CPAN
