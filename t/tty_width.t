@@ -17,7 +17,9 @@ foreach my $test (@TESTS) {
     my ($string, $widthsref, $label) = @$test;
     my $width = tty_width($string);
 
-    ok(grep({ $_ == $width } @$widthsref), $label);
+    ok(grep({ $_ == $width } @$widthsref), $label,
+       sprintf("expected width to be one of [%s], but it was %d",
+               join(", ", @$widthsref), $width));
 }
 
 done_testing();
