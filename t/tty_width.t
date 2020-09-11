@@ -6,20 +6,20 @@ use Test2::V0;
 use utf8;
 
 my @TESTS = (
-    ["word",                        [4],    "regular string"],
-    ["café",                        [4],    "non-wide unicode character"],
-    ["😄",                          [1,2],  "double-width emoji"],
-    ["こんにちは",                  [5,10], "hiragana"],
-    ["\e[32mこんにちは\e[0m",       [5,10], "red hiragana"],
+    ["word",                    4,  "regular string"],
+    ["café",                    4,  "non-wide unicode character"],
+    ["😄",                      2,  "double-width emoji"],
+    ["こんにちは",              10, "hiragana"],
+    ["\e[32mこんにちは\e[0m",   10, "red hiragana"],
 );
 
 foreach my $test (@TESTS) {
-    my ($string, $widthsref, $label) = @$test;
+    my ($string, $expected_width, $label) = @$test;
     my $width = tty_width($string);
 
-    ok(grep({ $_ == $width } @$widthsref), $label,
-       sprintf("expected width to be one of [%s], but it was %d",
-               join(", ", @$widthsref), $width));
+    is($width, $expected_width, $label,
+       sprintf("expected width of <<%s>> to be %d but it was %d",
+               $string, $expected_width, $width));
 }
 
 done_testing();

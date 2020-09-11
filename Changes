@@ -1,5 +1,9 @@
 Revision history for Perl module String::TtyLength
 
+0.01_05 2020-09-11 NEILB
+    - Switched from Text::CharWidth to Unicode::EastAsianWidth,
+      as it has more reliable results on CPAN Testers.
+
 0.01_04 2020-09-11 NEILB
     - Ok, lying to the C library about LANG seems to have been a bad idea :-)
 

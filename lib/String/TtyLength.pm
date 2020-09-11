@@ -4,11 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 use parent 'Exporter';
-
-# RECOMMEND PREREQ: Text::CharWidth 0.04
-BEGIN {
-    eval "use Text::CharWidth ();";
-}
+use Unicode::EastAsianWidth;
 
 our @EXPORT_OK = qw/ tty_length tty_width /;
 
@@ -34,37 +30,22 @@ my $ansi_code           = qr/
 sub tty_length
 {
     my $string = shift;
-    return length(remove_ansi_codes($string));
+    return length(_remove_ansi_codes($string));
 }
 
 sub tty_width
 {
-    my $string = remove_ansi_codes(shift);
-    my $width;
+    my $string = _remove_ansi_codes(shift);
+    my $width  = length($string);
 
-    # If the LANG environment variable isn't set,
-    # then the wcswidth() C function underlying mbswidth()
-    # is going to effectively return nonsense, so we skip it.
-    if (defined $ENV{LANG}) {
-        $width = eval { Text::CharWidth::mbswidth($string) };
-    }
-
-    # If we haven't got a width from mbswidth(), or it appears
-    # to have returned nonsense (negative width), then we fall
-    # back on using length(), which we know will return the
-    # wrong answer for wide characters, but we do the best we can.
-    # Maybe if the string is just "<backspace>" then a negative
-    # width is the right thing, but for now we'll try this.
-    if (!defined($width) || $width < 0) {
-        $width = length($string);
-    }
+    $width++ while $string =~ /\p{InFullwidth}/msg;
 
     return $width;
 }
 
 # might make this an exportable function
 # as well, but not sure what the right name is :-)
-sub remove_ansi_codes
+sub _remove_ansi_codes
 {
     my $string = shift;
     $string =~ s/$ansi_code//mosg;
@@ -85,11 +66,13 @@ String::TtyLength - length or width of string excluding ANSI tty codes
 
 =head1 SYNOPSIS
 
- use Text::Table::Tiny / tty_length /;
+ use Text::Table::Tiny / tty_length tty_width /;
  $length = tty_length("\e[1mbold text\e[0m");
  print "length = $length\n";
-
  # 9
+
+ $width = tty_width("😄");
+ # 2
 
 =head1 DESCRIPTION
 
@@ -103,7 +86,8 @@ tty / terminal escape codes.
 C<tty_width> returns the number of columns on a terminal that
 the string will take up, also excluding any escape codes.
 
-For non-wide characters, they functions will return the same value.
+For non-wide characters,
+the functions will return the same value.
 But consider the following:
 
  my $emoji  = "😄";
@@ -132,12 +116,8 @@ was just too long.
 Takes a single string and returns the number of columns
 that the string will take up on a terminal.
 
-If you might have wide characters in your string,
-you should make sure you've installed L<Text::CharWidth>,
-as that's used to calculate the width,
-after stripping any escape codes.
-If you don't have C<Text::CharWidth> installed,
-we fall back onto using the C<length()> builtin.
+You may find that sometimes C<tty_width()> returns the wrong number.
+If you do, please submit a bug, or email me at the address below.
 
 =head1 REPOSITORY
 
