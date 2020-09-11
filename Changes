@@ -1,5 +1,8 @@
 Revision history for Perl module String::TtyLength
 
+0.01_04 2020-09-11 NEILB
+    - Ok, lying to the C library about LANG seems to have been a bad idea :-)
+
 0.01_03 2020-09-11 NEILB
     - The C function wcswidth() used by Text::CharWidth needs LANG to be set,
       otherwise you essentially get nonsense back. So now tty_width() checks
