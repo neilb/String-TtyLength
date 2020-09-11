@@ -1,5 +1,11 @@
 Revision history for Perl module String::TtyLength
 
+0.01_03 2020-09-11 NEILB
+    - The C function wcswidth() used by Text::CharWidth needs LANG to be set,
+      otherwise you essentially get nonsense back. So now tty_width() checks
+      for that before trying to be smart. Set the test case to default
+      to "en_US.UTF-8", just to see how that works out with CPAN Testers.
+
 0.01_02 2020-09-11 NEILB
     - Lots of CPAN Testers fails, so put some diagnostics in the tests,
       as there's one test failing that I really didn't expect.

@@ -39,11 +39,25 @@ sub tty_length
 
 sub tty_width
 {
-    my $string = shift;
-    $string = remove_ansi_codes($string);
+    my $string = remove_ansi_codes(shift);
+    my $width;
 
-    my $width = eval { Text::CharWidth::mbswidth($string) };
-    $width = length($string) if not defined $width;
+    # If the LANG environment variable isn't set,
+    # then the wcswidth() C function underlying mbswidth()
+    # is going to effectively return nonsense, so we skip it.
+    if (defined $ENV{LANG}) {
+        $width = eval { Text::CharWidth::mbswidth($string) };
+    }
+
+    # If we haven't got a width from mbswidth(), or it appears
+    # to have returned nonsense (negative width), then we fall
+    # back on using length(), which we know will return the
+    # wrong answer for wide characters, but we do the best we can.
+    # Maybe if the string is just "<backspace>" then a negative
+    # width is the right thing, but for now we'll try this.
+    if (!defined($width) || $width < 0) {
+        $width = length($string);
+    }
 
     return $width;
 }

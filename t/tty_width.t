@@ -13,6 +13,8 @@ my @TESTS = (
     ["\e[32mこんにちは\e[0m",       [5,10], "red hiragana"],
 );
 
+$ENV{LANG} = "en_US.UTF-8" if !defined($ENV{LANG}) || $ENV{LANG} !~ /\S/;
+
 foreach my $test (@TESTS) {
     my ($string, $widthsref, $label) = @$test;
     my $width = tty_width($string);
