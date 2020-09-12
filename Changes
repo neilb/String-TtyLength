@@ -1,5 +1,11 @@
 Revision history for Perl module String::TtyLength
 
+0.01_06 2020-09-12 NEILB
+    - Require Unicode::EastAsianWidth version 12.0 or later.
+      Had a bunch of CPAN Testers failures on FreeBSD, but it looks
+      like they're all from the same box, with an old version of
+      Unicode::EastAsianWidth.
+
 0.01_05 2020-09-11 NEILB
     - Switched from Text::CharWidth to Unicode::EastAsianWidth,
       as it has more reliable results on CPAN Testers.

@@ -4,7 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 use parent 'Exporter';
-use Unicode::EastAsianWidth;
+use Unicode::EastAsianWidth 12.0;
 
 our @EXPORT_OK = qw/ tty_length tty_width /;
 
