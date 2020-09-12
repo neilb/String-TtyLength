@@ -1,5 +1,8 @@
 Revision history for Perl module String::TtyLength
 
+0.02 2020-09-12 NEILB
+    - First non-developer release that includes tty_width() function.
+
 0.01_06 2020-09-12 NEILB
     - Require Unicode::EastAsianWidth version 12.0 or later.
       Had a bunch of CPAN Testers failures on FreeBSD, but it looks

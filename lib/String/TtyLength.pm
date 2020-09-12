@@ -66,12 +66,13 @@ String::TtyLength - length or width of string excluding ANSI tty codes
 
 =head1 SYNOPSIS
 
- use Text::Table::Tiny / tty_length tty_width /;
+ use Text::Table::Tiny 0.02 qw/ tty_length tty_width /;
  $length = tty_length("\e[1mbold text\e[0m");
  print "length = $length\n";
  # 9
 
  $width = tty_width("😄");
+ print "width = $width\n";
  # 2
 
 =head1 DESCRIPTION
@@ -99,6 +100,7 @@ then you'll probably want C<tty_width>;
 if you just want to know the number of characters,
 using C<tty_length>.
 
+
 =head2 tty_length( STRING )
 
 Takes a single string,
@@ -111,6 +113,7 @@ number of characters that would be visible on screen.
 But C<length_of_string_excluding_escape_sequences()>
 was just too long.
 
+
 =head2 tty_width( STRING )
 
 Takes a single string and returns the number of columns
@@ -118,6 +121,17 @@ that the string will take up on a terminal.
 
 You may find that sometimes C<tty_width()> returns the wrong number.
 If you do, please submit a bug, or email me at the address below.
+
+This was added in version 0.02 of C<String::TtyLength>,
+so you should require at least that version of this module,
+as per the SYNOPSIS.
+
+
+=head1 SEE ALSO
+
+C<colorstrip()> in L<Term::ANSIColor>
+will remove ANSI color escape sequences from a string,
+but not all ANSI escape sequences.
 
 =head1 REPOSITORY
 
